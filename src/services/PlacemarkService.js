@@ -32,9 +32,8 @@ export class PlacemarkService {
       if (response.data.success) {
         const decodedToken = verify(
           response.data.token,
-          "thisisadsecretdontsharewithanybodyorelse"
+          "definitelydontsharethis"
         );
-        console.log(decodedToken);
         userStore.set({
           // @ts-ignore
           id: decodedToken.id,
@@ -42,7 +41,8 @@ export class PlacemarkService {
           token: response.data.token,
         });
         localStorage.placemarkSvelte = JSON.stringify({
-          id: decodedToken.indexOf,
+          // @ts-ignore
+          id: decodedToken.id,
           username: username,
           token: response.data.token,
         });
@@ -82,6 +82,60 @@ export class PlacemarkService {
   async getUserPlaces(id) {
     try {
       const response = await axios.get(this.baseUrl + "/api/places/user/" + id);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+
+  async getPublicPlaces() {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/places");
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+
+  async getPublicPlaceById(id) {
+    try {
+      const response = await axios.get(
+        this.baseUrl + "/api/places/public/" + id
+      );
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+
+  async getPlaceById(id) {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/places/" + id);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+
+  async getCategories() {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/categories");
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+
+  async getReviewsByPlaceId(id) {
+    try {
+      const response = await axios.get(
+        this.baseUrl + "/api/reviews/place/" + id
+      );
       return response.data;
     } catch (err) {
       console.log(err);

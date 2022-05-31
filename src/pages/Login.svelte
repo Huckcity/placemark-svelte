@@ -1,7 +1,6 @@
 <script>
   import { push } from "svelte-spa-router";
   import { getContext } from "svelte";
-  import { prevent_default } from "svelte/internal";
 
   let email = "";
   let password = "";
@@ -12,7 +11,7 @@
   async function login() {
     let success = await placemarkService.login(email, password);
     if (success) {
-      push("/donate");
+      push("/map");
     } else {
       email = "";
       password = "";
@@ -45,7 +44,7 @@
     />
   </div>
   <div class="field is-grouped">
-    <button class="button is-link">Sign Up</button>
+    <button class="button is-link">Log In</button>
   </div>
 </form>
 {#if errorMessage}

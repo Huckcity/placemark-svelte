@@ -62,7 +62,10 @@ export class LeafletMap {
 
   moveTo(zoom, location) {
     this.imap.setZoom(zoom);
-    this.imap.panTo(new L.LatLng(location.lat, location.lng));
+    this.imap.panTo(new L.LatLng(location.lat, location.lng), {
+      animate: true,
+      duration: 1,
+    });
   }
 
   zoomTo(location) {
@@ -73,7 +76,7 @@ export class LeafletMap {
     let group = {};
     let marker = L.marker([location.lat, location.lng]);
     if (popupText) {
-      var popup = L.popup({ autoClose: false, closeOnClick: false });
+      var popup = L.popup({ autoClose: true, closeOnClick: true });
       popup.setContent(popupText);
       marker.bindPopup(popup);
     }
@@ -85,6 +88,13 @@ export class LeafletMap {
       group = this.overlays[layerTitle];
     }
     marker.addTo(group);
+  }
+
+  clear() {
+    // remove all markers from each layer
+    for (let layer in this.overlays) {
+      this.overlays[layer].clearLayers();
+    }
   }
 
   invalidateSize() {

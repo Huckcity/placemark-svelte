@@ -1,27 +1,46 @@
 <script>
   import "leaflet/dist/leaflet.css";
   import { LeafletMap } from "../services/leaflet-map";
-  import { getContext, onMount } from "svelte";
-  import { userStore } from "../stores/user-store";
+  import { onMount } from "svelte";
 
-  const placemarkService = getContext("PlacemarkService");
+  export let filteredPlaces;
+
+  let map;
 
   const mapConfig = {
-    location: { lat: 52.160858, lng: -7.15242 },
-    zoom: 8,
+    location: { lat: 53.160858, lng: -8.15242 },
+    zoom: 7,
     minZoom: 1,
   };
 
   onMount(async () => {
-    const map = new LeafletMap("donation-map", mapConfig);
+    map = new LeafletMap("map", mapConfig);
     map.showZoomControl();
 
-    const places = await placemarkService.getUserPlaces($userStore.id);
-    console.log(places);
-    places.forEach((place) => {
-      map.addMarker({ lat: place.location.lat, lng: place.location.lng });
+    filteredPlaces.forEach((place) => {
+      map.addMarker(
+        place.location,
+        "<a href=/#/place/" +
+          place._id +
+          "?public=" +
+          place.public +
+          ">" +
+          place.name +
+          "</a>",
+        place.category.name
+      );
     });
+
+    map.showLayerControl();
+    // zoom to random place
+    const randomPlace =
+      filteredPlaces[Math.floor(Math.random() * filteredPlaces.length)];
+    map.moveTo(12, randomPlace.location);
   });
+
+  export const moveTo = (zoom, place) => {
+    map.moveTo(zoom, place.location);
+  };
 </script>
 
-<div class="box" id="donation-map" style="height:800px" />
+<div class="box" id="map" style="height:800px" />
