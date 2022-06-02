@@ -32,7 +32,7 @@ export class PlacemarkService {
       if (response.data.success) {
         const decodedToken = verify(
           response.data.token,
-          "definitelydontsharethis"
+          "thisisadsecretdontsharewithanybodyorelse"
         );
         userStore.set({
           // @ts-ignore

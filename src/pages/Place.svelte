@@ -3,8 +3,11 @@
   import { push, querystring } from "svelte-spa-router";
   import "leaflet/dist/leaflet.css";
   import { LeafletMap } from "../services/leaflet-map";
+  import WeatherBox from "../components/WeatherBox.svelte";
 
   export let params = {};
+
+  console.log(import.meta.env.VITE_WEATHERAPI_KEY);
 
   const placemarkService = getContext("PlacemarkService");
   let place, reviews;
@@ -31,10 +34,15 @@
       minZoom: 1,
     };
 
+    const mapConfig2 = { ...mapConfig, zoom: 15 };
+
     let map = new LeafletMap("map", mapConfig);
+    let map2 = new LeafletMap("map2", mapConfig2, "Satellite");
     map.showZoomControl();
+    map2.showZoomControl();
 
     map.addMarker({ lat: place.location.lat, lng: place.location.lng });
+    map2.addMarker({ lat: place.location.lat, lng: place.location.lng });
   });
 
   const prettyDate = (date) => {
@@ -56,7 +64,11 @@
   };
 </script>
 
-<div class="box" id="map" style="height:300px" />
+<div class="is-flex">
+  <div class="box" id="map" style="height:300px; width: 50%" />
+  <div class="box" id="map2" style="height:300px; width: 50%" />
+</div>
+
 {#if place && reviews}
   <div class="is-flex">
     <h3 class="title is-3">{place.name}</h3>
@@ -99,6 +111,8 @@
       </div>
     </div>
   </div>
+
+  <WeatherBox {place} />
 {/if}
 
 <style>
