@@ -20,9 +20,22 @@
     "/login": Login,
     "/signup": Signup,
     "/public": Public,
-    "/map": Map,
     "/main": Main,
     "/logout": Logout,
+
+    "/map": wrap({
+      component: Map,
+      conditions: [
+        (details) => {
+          if ($userStore.id) {
+            return true;
+          } else {
+            push("/logout");
+            return false;
+          }
+        },
+      ],
+    }),
 
     "/place/:id": wrap({
       component: Place,

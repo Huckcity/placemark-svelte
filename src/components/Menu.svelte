@@ -7,7 +7,6 @@
   export let moveToPlace;
 
   const setCategory = (val) => {
-    console.log(val);
     selectedCategory = val;
     updatePlaces(selectedCategory);
   };

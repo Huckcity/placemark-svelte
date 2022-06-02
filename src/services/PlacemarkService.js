@@ -32,7 +32,7 @@ export class PlacemarkService {
       if (response.data.success) {
         const decodedToken = verify(
           response.data.token,
-          "thisisadsecretdontsharewithanybodyorelse"
+          import.meta.env.VITE_JWT_SECRET
         );
         userStore.set({
           // @ts-ignore

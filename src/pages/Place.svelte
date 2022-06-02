@@ -4,10 +4,10 @@
   import "leaflet/dist/leaflet.css";
   import { LeafletMap } from "../services/leaflet-map";
   import WeatherBox from "../components/WeatherBox.svelte";
+  import Gallery from "../components/Gallery.svelte";
+  import { prettyDate, averageRating } from "../services/utils";
 
   export let params = {};
-
-  console.log(import.meta.env.VITE_WEATHERAPI_KEY);
 
   const placemarkService = getContext("PlacemarkService");
   let place, reviews;
@@ -21,12 +21,10 @@
       place = await placemarkService.getPlaceById(params.id);
       if (!place) {
         alert("You are not authorized to view this page");
-        push("/");
+        push("/logout");
       }
     }
     reviews = await placemarkService.getReviewsByPlaceId(params.id);
-    console.log(reviews);
-    console.log(place);
 
     const mapConfig = {
       location: { lat: place.location.lat, lng: place.location.lng },
@@ -36,7 +34,7 @@
 
     const mapConfig2 = { ...mapConfig, zoom: 15 };
 
-    let map = new LeafletMap("map", mapConfig);
+    let map = new LeafletMap("map1", mapConfig);
     let map2 = new LeafletMap("map2", mapConfig2, "Satellite");
     map.showZoomControl();
     map2.showZoomControl();
@@ -44,28 +42,10 @@
     map.addMarker({ lat: place.location.lat, lng: place.location.lng });
     map2.addMarker({ lat: place.location.lat, lng: place.location.lng });
   });
-
-  const prettyDate = (date) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    // @ts-ignore
-    return new Date(date).toLocaleDateString("en-US", options);
-  };
-
-  const averageRating = (reviews) => {
-    let sum = 0;
-    reviews.forEach((review) => {
-      sum += review.rating;
-    });
-    return Math.round(sum / reviews.length);
-  };
 </script>
 
 <div class="is-flex">
-  <div class="box" id="map" style="height:300px; width: 50%" />
+  <div class="box" id="map1" style="height:300px; width: 50%" />
   <div class="box" id="map2" style="height:300px; width: 50%" />
 </div>
 
@@ -113,6 +93,10 @@
   </div>
 
   <WeatherBox {place} />
+
+  {#if place.placeImages.length > 1}
+    <Gallery {place} />
+  {/if}
 {/if}
 
 <style>
