@@ -21,8 +21,6 @@
     new PlacemarkService("https://placemark.herokuapp.com")
   );
 
-  const placemarkService = getContext("PlacemarkService");
-
   const routes = {
     "/": Main,
     "/login": Login,
@@ -55,7 +53,7 @@
                   const email = json.email;
                   const name = json.name;
                   console.log(json);
-                  placemarkService.login(email, name);
+                  // placemarkService.login(email, name);
                   push("/map");
                 });
             });
