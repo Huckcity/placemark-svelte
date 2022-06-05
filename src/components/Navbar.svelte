@@ -26,7 +26,7 @@
   .logo {
     width: 140px;
     height: 100px;
-    background-image: url("./logo.png");
+    background-image: url("../logo.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
