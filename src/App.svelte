@@ -2,7 +2,7 @@
   import Router, { push } from "svelte-spa-router";
   import { wrap } from "svelte-spa-router/wrap";
   import { PlacemarkService } from "./services/PlacemarkService";
-  import { setContext } from "svelte";
+  import { setContext, getContext } from "svelte";
   import { userStore } from "./stores/user-store.js";
 
   import Main from "./pages/Main.svelte";
@@ -21,6 +21,8 @@
     new PlacemarkService("https://placemark.herokuapp.com")
   );
 
+  const placemarkService = getContext("PlacemarkService");
+
   const routes = {
     "/": Main,
     "/login": Login,
@@ -28,6 +30,38 @@
     "/public": Public,
     "/main": Main,
     "/logout": Logout,
+
+    "/login/github": wrap({
+      conditions: [
+        (detail) => {
+          const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+          const clientSecret = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
+
+          const queryParams = new URLSearchParams(detail.querystring);
+          const code = queryParams.get("code");
+
+          const url = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`;
+
+          fetch(url)
+            .then((response) => response.json())
+            .then((json) => {
+              const accessToken = json.access_token;
+              const url = `https://api.github.com/user?access_token=${accessToken}`;
+
+              fetch(url)
+                .then((response) => response.json())
+                .then((json) => {
+                  const email = json.email;
+                  const name = json.name;
+                  console.log(json);
+                  placemarkService.login(email, name);
+                  push("/map");
+                });
+            });
+          return true;
+        },
+      ],
+    }),
 
     "/map": wrap({
       component: Map,

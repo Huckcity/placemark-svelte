@@ -2,6 +2,7 @@
   import { push } from "svelte-spa-router";
   import { getContext } from "svelte";
 
+  const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
   let email = "";
   let password = "";
   let errorMessage = "";
@@ -15,15 +16,6 @@
     } else {
       email = "";
       password = "";
-      errorMessage = "Invalid Credentials";
-    }
-  }
-
-  async function githubLogin() {
-    let success = await placemarkService.githubLogin();
-    if (success) {
-      push("/map");
-    } else {
       errorMessage = "Invalid Credentials";
     }
   }
@@ -71,7 +63,15 @@
         <a href="/">OAuth Login</a>
       </h1>
       <p class="subtitle">Log in with your GitHub account to get started.</p>
-      <button class="button is-link" on:click={githubLogin}>Log In</button>
+      <a
+        href="https://github.com/login/oauth/authorize?client_id={clientId}&scope=user:email"
+        class="button is-primary"
+      >
+        <span class="icon">
+          <i class="fab fa-github" />
+        </span>
+        <span>Log in with GitHub</span>
+      </a>
     </div>
   </div>
 </div>
