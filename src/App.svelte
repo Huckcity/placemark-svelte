@@ -12,6 +12,8 @@
   import Map from "./pages/Map.svelte";
   import Public from "./pages/Public.svelte";
   import Place from "./pages/Place.svelte";
+  import Navbar from "./components/Navbar.svelte";
+  import AddImage from "./pages/AddImage.svelte";
 
   setContext("PlacemarkService", new PlacemarkService("http://localhost:3001"));
 
@@ -26,7 +28,7 @@
     "/map": wrap({
       component: Map,
       conditions: [
-        (details) => {
+        () => {
           if ($userStore.id) {
             return true;
           } else {
@@ -52,30 +54,24 @@
         },
       ],
     }),
+
+    "/places/:id/images/add": wrap({
+      component: AddImage,
+      conditions: [
+        () => {
+          if ($userStore.id) {
+            return true;
+          } else {
+            push("/logout");
+            return false;
+          }
+        },
+      ],
+    }),
   };
 </script>
 
 <div class="container">
-  <div class="tabs notification is-primary">
-    {#if $userStore.username}
-      <ul>
-        <li><a href="/#/">Home</a></li>
-        <li><a href="/#/map">Map</a></li>
-        <li><a href="/#/logout">Logout</a></li>
-      </ul>
-      <div class="is-size-7">{$userStore.username}</div>
-    {:else}
-      <ul>
-        <li><a href="/#/">Home</a></li>
-        <li><a href="/#/public">Public Places</a></li>
-        <li><a href="/#/login">Login</a></li>
-        <li><a href="/#/signup">Signup</a></li>
-      </ul>
-      <div class="is-size-7">Placemark</div>
-    {/if}
-  </div>
+  <Navbar />
   <Router {routes} />
 </div>
-
-<style>
-</style>

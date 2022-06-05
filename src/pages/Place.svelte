@@ -1,10 +1,15 @@
 <script>
   import { onMount, getContext } from "svelte";
   import { push, querystring } from "svelte-spa-router";
+  import { userStore } from "../stores/user-store";
+
   import "leaflet/dist/leaflet.css";
   import { LeafletMap } from "../services/leaflet-map";
+
   import WeatherBox from "../components/WeatherBox.svelte";
   import Gallery from "../components/Gallery.svelte";
+  import GoogleImages from "../components/GoogleImages.svelte";
+
   import { prettyDate, averageRating } from "../services/utils";
 
   export let params = {};
@@ -24,6 +29,10 @@
         push("/logout");
       }
     }
+
+    console.log(place.placeImages);
+
+    place.placeImages.splice(0, 1);
     reviews = await placemarkService.getReviewsByPlaceId(params.id);
 
     const mapConfig = {
@@ -32,7 +41,7 @@
       minZoom: 1,
     };
 
-    const mapConfig2 = { ...mapConfig, zoom: 15 };
+    const mapConfig2 = { ...mapConfig, zoom: 16 };
 
     let map = new LeafletMap("map1", mapConfig);
     let map2 = new LeafletMap("map2", mapConfig2, "Satellite");
@@ -94,8 +103,24 @@
 
   <WeatherBox {place} />
 
-  {#if place.placeImages.length > 1}
-    <Gallery {place} />
+  {#if place.placeImages.length > 0}
+    <Gallery bind:place />
+  {:else}
+    <div class="box is-flex is-justify-content-space-around">
+      <p class="title is-5 has-text-centered">
+        No user images yet. Displaying top results from Google Images.
+      </p>
+      {#if $userStore.id}
+        <a href="/#/places/{place._id}/images/add">
+          <button class="button is-primary">Add images</button>
+        </a>
+      {:else}
+        <a href="/#/login">
+          <button class="button is-primary">Login to add images</button>
+        </a>
+      {/if}
+    </div>
+    <GoogleImages {place} />
   {/if}
 {/if}
 

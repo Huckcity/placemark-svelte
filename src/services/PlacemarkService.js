@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as fs from "fs";
 import { verify } from "jsonwebtoken-esm";
 import { userStore } from "../stores/user-store";
 
@@ -140,6 +141,31 @@ export class PlacemarkService {
     } catch (err) {
       console.log(err);
       return [];
+    }
+  }
+
+  async deleteImage(placeId, imageName) {
+    try {
+      const res = await axios.post(
+        this.baseUrl + "/api/places/image/" + placeId + "/" + imageName
+      );
+      return res;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+
+  async addImage(formData) {
+    try {
+      const res = await axios.post(
+        this.baseUrl + "/api/places/image/add",
+        formData
+      );
+      return res;
+    } catch (err) {
+      console.log(err);
+      return false;
     }
   }
 }

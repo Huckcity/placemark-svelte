@@ -2,5 +2,4 @@
   import FilterMap from "../components/FilterMap.svelte";
 </script>
 
-Private Places
 <FilterMap publicPlaces={false} />

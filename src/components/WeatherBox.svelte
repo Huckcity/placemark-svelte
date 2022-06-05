@@ -122,5 +122,6 @@
   </div>
   <br />
 {:else}
-  <p>Loading weather...</p>
+  <p class="title has-text-centered">Loading weather...</p>
+  <progress class="progress is-large is-dark" max="100">Loading...</progress>
 {/if}
