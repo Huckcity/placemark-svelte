@@ -57,11 +57,19 @@ export class PlacemarkService {
 
   async githubLogin() {
     try {
-      const response = await axios.get(this.baseUrl + "/api/githublogin");
-      return response.data;
-    } catch (err) {
-      console.log(err);
-      return false;
+      const response = await axios.post(
+        `https://cors-anyhuck.herokuapp.com/https://github.com/login/oauth/access_token?client_id=${
+          import.meta.env.VITE_GITHUB_CLIENT_ID
+        }&client_secret=${import.meta.env.VITE_GITHUB_CLIENT_SECRET}&code=${
+          import.meta.env.VITE_GITHUB_CODE
+        }&redirect_uri=${import.meta.env.VITE_GITHUB_REDIRECT_URI}`
+      );
+
+      console.log(response.data);
+      const access_token = response.data.access_token;
+      console.log(access_token);
+    } catch (error) {
+      console.log(error);
     }
   }
 
