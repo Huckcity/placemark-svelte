@@ -1,6 +1,7 @@
 <script>
   import axios from "axios";
   import { onMount } from "svelte";
+  import Charts from "./Charts.svelte";
   import { prettyDate, defaultDate, kelvinToCelsius } from "../services/utils";
   export let place;
 
@@ -118,6 +119,7 @@
         {/each}
       </div>
       <!-- end 5 day tile -->
+      <Charts {fiveDayForecast} />
     {/if}
   </div>
   <br />

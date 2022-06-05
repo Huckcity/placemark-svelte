@@ -19,11 +19,13 @@
 
   export let url = "";
 
-  // setContext("PlacemarkService", new PlacemarkService("http://localhost:3001"));
-  setContext(
-    "PlacemarkService",
-    new PlacemarkService("https://placemark.herokuapp.com")
-  );
+  setContext("PlacemarkService", new PlacemarkService("http://localhost:3001"));
+  // setContext(
+  //   "PlacemarkService",
+  //   new PlacemarkService(
+  //     "http://ec2-54-74-29-71.eu-west-1.compute.amazonaws.com:3001/"
+  //   )
+  // );
 
   const routes = {
     "/": Main,

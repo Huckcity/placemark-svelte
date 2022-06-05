@@ -10,6 +10,7 @@
   import GoogleImages from "../components/GoogleImages.svelte";
 
   import { prettyDate, averageRating } from "../services/utils";
+  import Charts from "../components/Charts.svelte";
 
   export let params = {};
 
