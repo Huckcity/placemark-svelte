@@ -32,6 +32,7 @@
     "/logout": Logout,
 
     "/login/github": wrap({
+      component: Login,
       conditions: [
         (detail) => {
           const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
