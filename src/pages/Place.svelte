@@ -3,7 +3,6 @@
   import { push, querystring } from "svelte-spa-router";
   import { userStore } from "../stores/user-store";
 
-  import "leaflet/dist/leaflet.css";
   import { LeafletMap } from "../services/leaflet-map";
 
   import WeatherBox from "../components/WeatherBox.svelte";

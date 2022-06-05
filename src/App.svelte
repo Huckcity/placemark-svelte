@@ -15,7 +15,11 @@
   import Navbar from "./components/Navbar.svelte";
   import AddImage from "./pages/AddImage.svelte";
 
-  setContext("PlacemarkService", new PlacemarkService("http://localhost:3001"));
+  // setContext("PlacemarkService", new PlacemarkService("http://localhost:3001"));
+  setContext(
+    "PlacemarkService",
+    new PlacemarkService("https://placemark.herokuapp.com")
+  );
 
   const routes = {
     "/": Main,

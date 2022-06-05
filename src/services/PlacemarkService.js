@@ -55,6 +55,16 @@ export class PlacemarkService {
     }
   }
 
+  async githubLogin() {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/githublogin");
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+
   async logout() {
     userStore.set({
       id: "",
