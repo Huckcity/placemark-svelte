@@ -2,7 +2,8 @@
   import { push } from "svelte-spa-router";
   import { getContext } from "svelte";
 
-  const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+  const clientId =
+    import.meta.env.VITE_GITHUB_CLIENT_ID || process.env.VITE_GITHUB_CLIENT_ID;
   let email = "";
   let password = "";
   let errorMessage = "";
